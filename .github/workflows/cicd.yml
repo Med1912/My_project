@@ -1,0 +1,168 @@
+name: pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  backend-lint:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install linting tools
+        working-directory: back
+        continue-on-error: true  
+        run: |
+          pip install ruff black isort
+
+      - name: Run Ruff lint
+        working-directory: back
+        continue-on-error: true  
+        run: ruff .
+
+      - name: Check formatting with Black and Isort
+        working-directory: back
+        continue-on-error: true  
+        run: |
+          black --check .
+          isort --check-only .
+
+  backend-test:
+    runs-on: ubuntu-latest
+    needs: backend-lint
+    steps:
+
+      - name: Checkout with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        working-directory: back
+        run: pip install -r requirements.txt
+
+      - name: Run Pytest
+        working-directory: back
+        continue-on-error: true  
+        run: pytest
+
+  frontend-lint:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install lint tools
+        working-directory: front
+        run: npm install
+
+      - name: Run ESLint
+        working-directory: front
+        continue-on-error: true  
+        run: npm run lint
+
+      - name: Check formatting with Prettier
+        working-directory: front
+        continue-on-error: true  
+        run: npx prettier --check .
+
+  frontend-test:
+    runs-on: ubuntu-latest
+    needs: frontend-lint
+    steps:
+
+      - name: Checkout with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        working-directory: front
+        run: npm install
+
+      - name: Run Vitest
+        working-directory: front
+        continue-on-error: true  
+        run: npm run test
+
+  backend-build-push:
+    runs-on: ubuntu-latest
+    needs: backend-test
+    steps:
+
+      - name: Checkout with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build backend Docker image
+        run: docker build -t ${{ secrets.DOCKER_BACK_USER }}/back:latest back/
+
+      - name: Login to back Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_BACK_USER }}
+          password: ${{ secrets.DOCKER_BACK_PASSWORD }}
+
+      - name: Push backend image
+        run: docker push ${{ secrets.DOCKER_BACK_USER }}/back:latest
+
+  frontend-build-push:
+    runs-on: ubuntu-latest
+    needs: frontend-test
+    steps:
+
+      - name: Checkout with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build frontend Docker image
+        run: docker build -t ${{ secrets.DOCKER_FRONT_USER }}/front:latest front/
+
+      - name: Login to front Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_FRONT_USER }}
+          password: ${{ secrets.DOCKER_FRONT_PASSWORD }}
+
+      - name: Push frontend image
+        run: docker push ${{ secrets.DOCKER_FRONT_USER }}/front:latest

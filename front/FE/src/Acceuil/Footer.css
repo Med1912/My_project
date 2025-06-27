@@ -1,0 +1,23 @@
+.footer-container {
+
+  padding: 1rem 2rem;
+  text-align: center;
+  margin-left: 250px; /* Correspond à la largeur de la nav */
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #94a3b8;
+}
+
+.footer-links a {
+  color: #e73c7e;
+  margin-left: 1rem;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}

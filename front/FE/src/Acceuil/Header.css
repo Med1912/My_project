@@ -1,0 +1,19 @@
+.header {
+  background: white;
+  padding: 0; /* Supprime le padding */
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Centre verticalement */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  height: 130px; /* Hauteur fixe pour le header */
+  width: 114.5%; /* Prend toute la largeur */
+  
+}
+
+.logo {
+  height: 30%; /* Prend toute la hauteur du header */
+  width: auto;
+  max-width: 100%; /* Empêche le débordement */
+  object-fit: contain; /* Garde les proportions */
+  padding: 10px 0; /* Espacement vertical si nécessaire */
+}

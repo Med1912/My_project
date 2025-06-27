@@ -1,0 +1,124 @@
+
+.sinistre-container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  background: #f9f9f9;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.card:hover {
+  background-color: #eef6ff;
+  border-color: #011a34;
+}
+
+.card.active {
+  background-color: #d8ecff;
+  border-color: #011a34;
+}
+
+
+.form-container {
+  margin-top: 40px;
+  padding: 20px;
+  background: #fff;
+  border-top: 4px solid #011a34;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-container span {
+  color: #011a34;
+}
+
+label {
+  display: block;
+  margin: 10px 0 5px;
+  font-weight: bold;
+  color: #444;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-send {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-send:hover {
+  background-color: #218838;
+}
+
+.btn-cancel {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background-color: #c82333;
+}
+
+
+.message {
+  margin-top: 20px;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  background-color: #e6f7e6;
+  border: 1px solid #28a745;
+  border-radius: 5px;
+  color: #155724;
+}
