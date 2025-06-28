@@ -49,6 +49,16 @@ docker-compose exec backend alembic upgrade head
 - **Backend**: [http://localhost:8000](http://localhost:8000)
   
 - **Frontend**: [http://localhost:3000](http://localhost:3000)
+md
+Docker Image
+
+[![Docker Pulls](https://img.shields.io/docker/pulls/mohamedkarbous/my-python-app)](https://hub.docker.com/r/mohamedkarbous/my-python-app)
+
+Pull the image:
+
+bash
+docker pull mohamedkarbous/my-python-app:latest
+```
 
 
 
